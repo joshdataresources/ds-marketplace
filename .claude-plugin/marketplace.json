@@ -3,7 +3,7 @@
   "owner": { "name": "Josh Butler", "email": "joshuabbutler@gmail.com" },
   "metadata": {
     "description": "Design-system platform plugins: bootstrap coded design systems per client and build screens from prompts.",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "plugins": [
     {
