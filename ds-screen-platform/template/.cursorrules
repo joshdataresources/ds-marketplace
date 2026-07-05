@@ -1,0 +1,12 @@
+Coded design system starter. Build screens by composing the real <ds-*> web
+components from ds/ds.js — never hand-roll a component inline.
+
+Read ds/manifest.md for the component vocabulary (tag · attributes · example). If a component is
+missing, add ONE define("ds-…") block to ds/ds.js and run `npm run manifest`. All colors
+via --ds-* tokens.
+
+Do NOT read pipeline/components.json or pipeline/design-system.json (large offline data).
+Do NOT embed base64 image renders; compose the coded components instead.
+
+Commands (any terminal): npm run serve | build | verify | fidelity.
+Full rules: .cursor/rules/  ·  Pipeline diagram: PROCESS.md  ·  Daily commands: RUN.md

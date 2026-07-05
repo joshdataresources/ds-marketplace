@@ -1,0 +1,35 @@
+---
+description: Coded design-system conventions (ds-* prefix)
+globs:
+alwaysApply: true
+---
+
+# Coded design system — ds-* starter
+
+This repo is a **coded design system + screen builder**. Screens are composed from real
+`<ds-*>` web components — never hand-rolled markup.
+
+## The one rule
+Build screens by composing the coded `<ds-*>` components from `ds/ds.js`. Never
+re-implement a component inline in a screen. If a component is missing, add ONE
+`define("ds-…", (el) => …)` block to `ds/ds.js`, then run `npm run manifest`.
+
+## Source of truth
+- `ds/ds.js` — the component library (tokens + `<ds-*>` components). **THE source of truth.**
+- `ds/manifest.md` — the component index (tag · attributes · example). **Read this to know what exists.**
+- `layouts.json` — screen layout archetypes.
+- `PROCESS.md` — the whole pipeline as a diagram (start here). `RUN.md` — daily commands.
+
+## Commands (plain npm — run in any terminal/editor)
+- `npm run serve` → http://localhost:8128 (gallery at `/`, screens at `/screens/`)
+- `npm run build` → inline the DS into screens + gallery (self-contained output)
+- `npm run verify` → manifest + build + lint (**the gate** — run before calling anything done)
+- `npm run fidelity` → per-component pixel-diff vs the Figma node
+
+## Don't
+- Don't read `pipeline/components.json` / `pipeline/design-system.json` (large offline data — they blow context).
+- Don't embed base64 image renders — compose the coded components instead.
+- All colors via `--ds-*` tokens; never hardcode a hex that equals a token (the linter flags it).
+
+## Re-skin (white-label)
+Change the `--ds-*` tokens in `ds/ds.js` `:root`, then `npm run build`. Everything re-themes at once.

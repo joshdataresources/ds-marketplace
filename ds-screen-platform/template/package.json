@@ -1,0 +1,25 @@
+{
+  "name": "ds-starter",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Coded web-component design system + screen builder starter. See BOOTSTRAP.md.",
+  "scripts": {
+    "manifest": "node ds/build-manifest.mjs",
+    "build": "node build-screens.mjs",
+    "lint": "node agents/lint-ds.mjs",
+    "lint:fix": "node agents/lint-ds.mjs --fix",
+    "serve": "node serve.mjs",
+    "start": "node serve.mjs",
+    "snapshot": "node agents/snapshot.mjs",
+    "diff": "node agents/visual-diff.mjs",
+    "fidelity": "node agents/fidelity.mjs",
+    "verify": "npm run manifest && npm run build && npm run lint",
+    "audit": "node skills/screen-builder/scripts/audit_components.mjs"
+  },
+  "comment": "Core scripts (manifest/build/lint/serve/verify) are dependency-free — no install needed. snapshot/diff need the devDeps: run `npm i`, then `npx playwright install chromium`.",
+  "devDependencies": {
+    "pixelmatch": "^6.0.0",
+    "pngjs": "^7.0.0",
+    "playwright": "^1.49.0"
+  }
+}

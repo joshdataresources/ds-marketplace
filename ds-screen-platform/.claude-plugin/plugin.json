@@ -1,0 +1,7 @@
+{
+  "name": "ds-screen-platform",
+  "version": "0.1.0",
+  "description": "Prompt-to-screen design platform: bootstrap a coded design system for any client (tokens + web components + generated manifest + verify gates), then build screens from prompts by composing real components — never hand-rolled markup.",
+  "author": { "name": "Josh Butler" },
+  "keywords": ["design-system", "figma", "screen-builder", "white-label", "prototyping"]
+}

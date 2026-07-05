@@ -1,0 +1,7 @@
+{
+  "fileKey": "<YOUR_FIGMA_FILE_KEY>",
+  "comment": "Per-component fidelity cases. Each renders ONE <ds-*> instance (via component-harness.html) to match ONE Figma node, so they can be pixel-diffed. `node` = the exact variant node id. `params` become element attributes (empty string = boolean flag; `fg` sets icon color; `bg`/`w`/`pad` are harness directives). `mask` = CSS selectors for non-deterministic regions (QR codes, charts). Fill this in as you build components — see FIDELITY.md.",
+  "cases": [
+    { "id": "example-button", "tag": "ds-button", "node": "0:0", "w": 200, "params": { "type": "primary", "label": "Continue" } }
+  ]
+}

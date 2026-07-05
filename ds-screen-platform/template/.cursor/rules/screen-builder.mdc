@@ -1,0 +1,30 @@
+---
+description: How to build or extend a screen or component (component-first workflow + Figma fidelity).
+globs: screens/**/*.html,ds/ds.js
+alwaysApply: false
+---
+
+# Building a screen / component
+
+> Build by composing the coded `<ds-*>` components. Never re-implement a component inline,
+> never read the heavy `pipeline/` JSON, never embed base64 images.
+
+## Workflow (in order)
+1. **Load the vocabulary.** Read `ds/manifest.md` — every `<ds-*>` with attributes + an example.
+   It's generated from the code (`npm run manifest`), so it's always current.
+2. **Pick a layout archetype** from `layouts.json` and **study the closest existing screen** in
+   `screens/` — copy its device frame, spacing, and surface treatment.
+3. **Compose `<ds-*>` elements** with live data into `screens/<name>.html`. Keep
+   `<script src="../ds/ds.js"></script>` in the head — `npm run build` inlines it so the
+   file renders standalone.
+4. **Missing component? Extend the library.** Add ONE `define("ds-…", (el) => …)` block to
+   `ds/ds.js` (never inline it in the screen), then `npm run manifest`.
+5. **Build + verify.** `npm run build` then `npm run verify` (manifest → build → lint). Green = no drift.
+6. **Match Figma (fidelity).** Pull the node with the Figma MCP — `get_metadata` (structure) +
+   `get_variable_defs` (tokens → confirm they map to `--ds-*`) + one `get_screenshot` (ground truth).
+   Render the component in isolation via `agents/component-harness.html` and `npm run fidelity` to
+   pixel-diff vs the node; fix the `define()` until OK. Full loop in `agents/FIDELITY.md`.
+
+## Rules
+- All colors via `var(--ds-*)`. One component = one `define()`. Screens only compose; they never define.
+- Never read `pipeline/*.json`. Prefer reusing a component over adding one.

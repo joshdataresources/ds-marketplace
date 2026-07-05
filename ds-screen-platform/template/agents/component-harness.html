@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+  component-harness.html — render ONE <ds-*> component in isolation, driven by URL params, so it
+  can be screenshotted and pixel-diffed against its Figma node. Loads the live DS directly.
+
+  Params:
+    tag       (required) component tag, e.g. ds-button
+    w         optional width in px applied to the element (match the Figma variant width)
+    bg        optional page background (default transparent)
+    pad       optional padding around the component in px (default 0)
+    <name>=<value>   any other param becomes an attribute on the element
+                     (use an empty value for boolean flags, e.g. &active=)
+
+  Example:
+    /agents/component-harness.html?tag=ds-button&w=200&type=primary&label=Continue
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Component Harness</title>
+<script src="../ds/ds.js"></script>
+<style>
+  html,body{margin:0;padding:0}
+  #host{display:inline-block}
+</style>
+</head>
+<body>
+<div id="host"></div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const RESERVED = new Set(["tag", "w", "bg", "pad", "fg"]);
+  const tag = q.get("tag");
+  document.body.style.background = q.get("bg") || "transparent";
+  const host = document.getElementById("host");
+  const pad = q.get("pad"); if (pad) host.style.padding = pad + "px";
+  const fg = q.get("fg"); if (fg) host.style.color = fg; // icon color (currentColor) for fidelity
+  if (tag) {
+    const el = document.createElement(tag);
+    for (const [k, v] of q) { if (!RESERVED.has(k)) el.setAttribute(k, v); }
+    const w = q.get("w"); if (w) el.style.width = w + "px";
+    document.getElementById("host").appendChild(el);
+    document.title = tag;
+  }
+</script>
+</body>
+</html>

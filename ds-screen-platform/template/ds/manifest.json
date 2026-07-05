@@ -1,0 +1,114 @@
+[
+  {
+    "tag": "ds-icon",
+    "attrs": [
+      {
+        "name": "name",
+        "default": "wallet"
+      },
+      {
+        "name": "size",
+        "default": "20"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "tag": "ds-badge",
+    "attrs": [
+      {
+        "name": "size",
+        "default": "40"
+      },
+      {
+        "name": "label",
+        "default": "A"
+      },
+      {
+        "name": "color",
+        "default": ""
+      }
+    ],
+    "flags": []
+  },
+  {
+    "tag": "ds-button",
+    "attrs": [
+      {
+        "name": "type",
+        "default": "primary"
+      },
+      {
+        "name": "size",
+        "default": "lg"
+      },
+      {
+        "name": "icon",
+        "default": ""
+      },
+      {
+        "name": "label",
+        "default": ""
+      }
+    ],
+    "flags": [
+      "disabled"
+    ]
+  },
+  {
+    "tag": "ds-card",
+    "attrs": [
+      {
+        "name": "title",
+        "default": ""
+      }
+    ],
+    "flags": [
+      "flush"
+    ]
+  },
+  {
+    "tag": "ds-list-item",
+    "attrs": [
+      {
+        "name": "icon",
+        "default": ""
+      },
+      {
+        "name": "title",
+        "default": ""
+      },
+      {
+        "name": "subtitle",
+        "default": ""
+      },
+      {
+        "name": "value",
+        "default": ""
+      }
+    ],
+    "flags": []
+  },
+  {
+    "tag": "ds-field",
+    "attrs": [
+      {
+        "name": "label",
+        "default": ""
+      },
+      {
+        "name": "placeholder",
+        "default": ""
+      },
+      {
+        "name": "value",
+        "default": ""
+      },
+      {
+        "name": "type",
+        "default": "text"
+      }
+    ],
+    "flags": []
+  }
+]

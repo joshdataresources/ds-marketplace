@@ -1,0 +1,163 @@
+/*
+ * ds.js — design system starter, as real code.
+ *
+ * Framework-free Web Components. Each component is one `define("ds-…", render)` block.
+ * Everything is driven by --ds-* CSS tokens on :root, so a re-skin = change the tokens.
+ *
+ * Usage in a page:
+ *   <script src="ds/ds.js"><\/script>           (root)  — build-screens.mjs inlines this
+ *   <script src="../ds/ds.js"><\/script>        (screens/)
+ *   <ds-button type="primary" label="Continue"></ds-button>
+ *
+ * Add a component: copy a define() block below, give it a tag + render fn, then
+ * `npm run manifest` to refresh ds/manifest.md (the component vocabulary).
+ */
+(function () {
+  "use strict";
+
+  /* ---- design tokens + component styles (injected once) ------------------- */
+  const CSS = `
+  :root{
+    /* brand / status */
+    --ds-brand:#3d63ff; --ds-accent:#00c938; --ds-danger:#e81f5b;
+    /* surfaces */
+    --ds-bg:#f7f8fa; --ds-surface:#ffffff; --ds-field:#f1f3f7;
+    /* text */
+    --ds-text:#1c2233; --ds-text-2:#6b7488; --ds-text-inv:#ffffff;
+    /* lines */
+    --ds-border:#e5e8ef; --ds-border-strong:#d3d9e3;
+    /* radius + spacing */
+    --ds-r-sm:8px; --ds-r-md:14px; --ds-r-lg:20px; --ds-space:16px;
+    --ds-font:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  }
+  ds-icon,ds-badge,ds-button,ds-card,ds-list-item,ds-field{display:block;font-family:var(--ds-font)}
+  ds-icon{display:inline-flex}
+
+  /* badge — a circular token/avatar */
+  .ds-badge{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;
+    background:var(--ds-brand);color:#fff;font-weight:700;line-height:1}
+
+  /* button — primary / secondary / ghost, with hover + press states */
+  .ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;
+    border:1px solid transparent;border-radius:var(--ds-r-md);font-family:var(--ds-font);
+    font-weight:600;cursor:pointer;transition:filter .12s,background .12s,transform .04s;}
+  .ds-btn:active{transform:translateY(1px)}
+  .ds-btn--lg{height:52px;font-size:16px;padding:0 20px}
+  .ds-btn--sm{height:38px;font-size:14px;padding:0 14px;border-radius:var(--ds-r-sm)}
+  .ds-btn--primary{background:var(--ds-brand);color:var(--ds-text-inv)}
+  .ds-btn--primary:hover{filter:brightness(1.07)}
+  .ds-btn--secondary{background:var(--ds-field);color:var(--ds-text);border-color:var(--ds-border-strong)}
+  .ds-btn--secondary:hover{background:#e7ebf2}
+  .ds-btn--ghost{background:transparent;color:var(--ds-brand)}
+  .ds-btn--ghost:hover{background:rgba(61,99,255,.08)}
+  .ds-btn[disabled]{opacity:.45;cursor:not-allowed;filter:none;transform:none}
+
+  /* card — a surface container that wraps its own children */
+  .ds-card{background:var(--ds-surface);border:1px solid var(--ds-border);
+    border-radius:var(--ds-r-lg);overflow:hidden}
+  .ds-card__hd{padding:16px 18px;font-size:16px;font-weight:700;color:var(--ds-text);
+    border-bottom:1px solid var(--ds-border)}
+  .ds-card__body{padding:16px 18px}
+  .ds-card__body--flush{padding:0}                 /* edge-to-edge content (e.g. a list) */
+  .ds-card .ds-li:last-child{border-bottom:0}      /* no trailing divider inside a card */
+
+  /* list item — icon · title/subtitle · trailing value, with press feedback */
+  .ds-li{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--ds-surface);
+    border-bottom:1px solid var(--ds-border);cursor:pointer;transition:background .12s}
+  .ds-li:hover{background:#fafbfc}
+  .ds-li:active{background:#f2f4f8}
+  .ds-li__ic{flex:none;width:40px;height:40px;border-radius:50%;background:var(--ds-field);
+    display:flex;align-items:center;justify-content:center;color:var(--ds-text-2)}
+  .ds-li__tx{flex:1;min-width:0}
+  .ds-li__t{display:block;font-size:15px;font-weight:600;color:var(--ds-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ds-li__s{display:block;font-size:13px;color:var(--ds-text-2);margin-top:2px}
+  .ds-li__v{font-size:15px;font-weight:600;color:var(--ds-text);flex:none}
+
+  /* field — a labeled input with focus state */
+  .ds-field__lab{display:block;font-size:13px;font-weight:600;color:var(--ds-text-2);margin-bottom:6px}
+  .ds-field__in{width:100%;height:48px;padding:0 14px;font-size:16px;font-family:var(--ds-font);
+    color:var(--ds-text);background:var(--ds-field);border:1px solid var(--ds-border-strong);
+    border-radius:var(--ds-r-md);outline:none;transition:border-color .12s,background .12s}
+  .ds-field__in::placeholder{color:var(--ds-text-2)}
+  .ds-field__in:focus{border-color:var(--ds-brand);background:var(--ds-surface)}
+  `;
+
+  let injected = false;
+  function injectCSS() {
+    if (injected) return; injected = true;
+    const s = document.createElement("style");
+    s.id = "ds-css"; s.textContent = CSS;
+    document.head.appendChild(s);
+  }
+
+  /* ---- tiny inline-SVG icon set ------------------------------------------ */
+  const ICONS = {
+    wallet: '<path d="M3 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1h-3a3 3 0 0 0 0 6h3v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/><circle cx="17" cy="11" r="1.3"/>',
+    user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    bell: '<path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+    check: '<path d="m5 12 4.5 4.5L19 7"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    "chevron-right": '<path d="m9 6 6 6-6 6"/>',
+    "arrow-left": '<path d="M19 12H5m6-7-7 7 7 7"/>',
+    settings: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M19 5l-2 2M7 17l-2 2"/>',
+  };
+  function icon(name, size) {
+    const p = ICONS[name] || ICONS.wallet;
+    return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+  }
+
+  /* ---- helpers ----------------------------------------------------------- */
+  const attr = (el, name, def) => (el.getAttribute(name) ?? def);
+  function define(tag, render) {
+    if (customElements.get(tag)) return;
+    customElements.define(tag, class extends HTMLElement {
+      connectedCallback() { injectCSS(); const html = render(this); this.innerHTML = html; }
+    });
+  }
+
+  /* ---- components -------------------------------------------------------- */
+
+  // <ds-icon name="wallet" size="20">
+  define("ds-icon", (el) => icon(attr(el, "name", "wallet"), +attr(el, "size", 20)));
+
+  // <ds-badge label="A" size="40" color="#3d63ff">
+  define("ds-badge", (el) => {
+    const size = +attr(el, "size", 40), label = attr(el, "label", "A"), color = attr(el, "color", "");
+    const fs = Math.round(size * 0.42);
+    const style = `width:${size}px;height:${size}px;font-size:${fs}px;${color ? `background:${color};` : ""}`;
+    return `<span class="ds-badge" style="${style}">${label}</span>`;
+  });
+
+  // <ds-button type="primary|secondary|ghost" size="lg|sm" icon="check" label="Continue" disabled>
+  define("ds-button", (el) => {
+    const type = attr(el, "type", "primary");
+    const size = attr(el, "size", "lg") === "sm" ? "sm" : "lg";
+    const ic = attr(el, "icon", "");
+    const label = attr(el, "label", el.textContent || "");
+    const dis = el.hasAttribute("disabled") ? "disabled" : "";
+    return `<button class="ds-btn ds-btn--${size} ds-btn--${type}" ${dis}>${ic ? icon(ic, size === "sm" ? 16 : 20) : ""}<span>${label}</span></button>`;
+  });
+
+  // <ds-card title="Account" flush> …children… </ds-card>   (wraps its own light-DOM content;
+  // add `flush` for edge-to-edge content like a list)
+  define("ds-card", (el) => {
+    const title = attr(el, "title", "");
+    const flush = el.hasAttribute("flush") ? " ds-card__body--flush" : "";
+    const body = el.innerHTML;
+    return `<div class="ds-card">${title ? `<div class="ds-card__hd">${title}</div>` : ""}<div class="ds-card__body${flush}">${body}</div></div>`;
+  });
+
+  // <ds-list-item icon="wallet" title="Bitcoin" subtitle="BTC" value="$5,852.11">
+  define("ds-list-item", (el) => {
+    const ic = attr(el, "icon", ""), title = attr(el, "title", ""), sub = attr(el, "subtitle", ""), val = attr(el, "value", "");
+    return `<div class="ds-li">${ic ? `<span class="ds-li__ic">${icon(ic, 20)}</span>` : ""}<span class="ds-li__tx"><span class="ds-li__t">${title}</span>${sub ? `<span class="ds-li__s">${sub}</span>` : ""}</span>${val ? `<span class="ds-li__v">${val}</span>` : `<span class="ds-li__ic" style="background:transparent">${icon("chevron-right", 18)}</span>`}</div>`;
+  });
+
+  // <ds-field label="Email" placeholder="you@example.com" value="" type="text">
+  define("ds-field", (el) => {
+    const lab = attr(el, "label", ""), ph = attr(el, "placeholder", ""), val = attr(el, "value", ""), type = attr(el, "type", "text");
+    return `<label class="ds-field">${lab ? `<span class="ds-field__lab">${lab}</span>` : ""}<input class="ds-field__in" type="${type}" placeholder="${ph}" value="${val}"></label>`;
+  });
+
+})();

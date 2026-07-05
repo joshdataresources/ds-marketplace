@@ -1,0 +1,150 @@
+{
+  "meta": {
+    "description": "Screen layout archetypes — reusable structural blueprints. Reference an archetype by id, then fill its slots with components from ds/manifest.md.",
+    "version": "1.0.0",
+    "app": "Mobile app — coded design system starter",
+    "theme": "light (customize via --ds-* tokens in ds/ds.js)",
+    "frame": "393x852 logical points (iPhone)",
+    "figmaFileKey": "<YOUR_FIGMA_FILE_KEY>",
+    "referenceBoard": {
+      "fileKey": "<YOUR_FIGMA_FILE_KEY>",
+      "nodeId": "",
+      "label": "Reference screens board"
+    },
+    "conventions": {
+      "gains": "positive change color (--ds-accent)",
+      "losses": "negative change color (--ds-danger)",
+      "brand": "primary brand color (--ds-brand)",
+      "numberFormatting": "Right-align numeric columns; show +/- and color on change."
+    },
+    "usage": "When describing a screen, say e.g.: 'Use the DashboardScreen archetype. header = balance card; list = asset rows; tabBar = bottom nav.'"
+  },
+  "archetypes": [
+    {
+      "id": "AuthScreen",
+      "name": "Auth / Sign In",
+      "description": "Onboarding, login, registration. Centered logo, stacked form fields, full-width primary CTA, secondary links.",
+      "background": "page background (--ds-bg)",
+      "scroll": "vertical; content top-aligned",
+      "fixedElements": ["status bar"],
+      "slots": [
+        { "name": "brand", "role": "Logo / app wordmark", "components": [{ "name": "ds-badge", "id": null }] },
+        { "name": "title", "role": "Headline + subhead", "components": [{ "name": "text", "id": null }] },
+        { "name": "form", "role": "Input fields", "components": [{ "name": "ds-field", "id": null }] },
+        { "name": "primaryAction", "role": "Submit button", "components": [{ "name": "ds-button", "id": null }] },
+        { "name": "links", "role": "Secondary links", "components": [{ "name": "ds-button type=ghost", "id": null }] }
+      ]
+    },
+    {
+      "id": "DashboardScreen",
+      "name": "Dashboard",
+      "description": "Home landing. Total balance, chart area, quick actions, holdings preview. Bottom tab bar.",
+      "background": "page background (--ds-bg)",
+      "scroll": "vertical; bottom tab bar fixed",
+      "fixedElements": ["status bar", "bottom tab bar"],
+      "slots": [
+        { "name": "header", "role": "Greeting / total balance", "components": [{ "name": "ds-card", "id": null }] },
+        { "name": "chart", "role": "Performance chart", "components": [{ "name": "chart component", "id": null }] },
+        { "name": "quickActions", "role": "Action row", "components": [{ "name": "ds-button", "id": null }] },
+        { "name": "holdings", "role": "Asset preview list", "components": [{ "name": "ds-list-item", "id": null }] },
+        { "name": "tabBar", "role": "Bottom navigation", "components": [{ "name": "tab bar component", "id": null }] }
+      ]
+    },
+    {
+      "id": "MarketListScreen",
+      "name": "Markets List",
+      "description": "Scrollable list with search, column headers, and rows. Bottom tab bar persists.",
+      "background": "surface (--ds-surface)",
+      "scroll": "vertical; header sticky, bottom tab bar fixed",
+      "fixedElements": ["search bar", "bottom tab bar"],
+      "slots": [
+        { "name": "header", "role": "Title + search", "components": [{ "name": "ds-field", "id": null }] },
+        { "name": "columns", "role": "Column headers", "components": [{ "name": "header row", "id": null }] },
+        { "name": "list", "role": "Market rows", "components": [{ "name": "ds-list-item", "id": null }] },
+        { "name": "tabBar", "role": "Bottom navigation", "components": [{ "name": "tab bar component", "id": null }] }
+      ]
+    },
+    {
+      "id": "DetailScreen",
+      "name": "Detail",
+      "description": "Single-item detail with toolbar, scrolling content stack, and pinned action bar.",
+      "background": "page background (--ds-bg)",
+      "scroll": "vertical; toolbar sticky; action bar pinned at bottom",
+      "fixedElements": ["toolbar", "action bar"],
+      "slots": [
+        { "name": "toolbar", "role": "Back nav + actions", "components": [{ "name": "ds-button type=ghost", "id": null }] },
+        { "name": "hero", "role": "Primary content header", "components": [{ "name": "ds-card", "id": null }] },
+        { "name": "sections", "role": "Repeated content modules", "components": [{ "name": "ds-card", "id": null }] },
+        { "name": "actionBar", "role": "Primary CTA", "components": [{ "name": "ds-button", "id": null }] }
+      ]
+    },
+    {
+      "id": "WalletScreen",
+      "name": "Wallet",
+      "description": "Portfolio holdings. Total balance, per-asset rows, deposit/withdraw actions.",
+      "background": "page background (--ds-bg)",
+      "scroll": "vertical; bottom tab bar fixed",
+      "fixedElements": ["bottom tab bar"],
+      "slots": [
+        { "name": "summary", "role": "Total balance", "components": [{ "name": "ds-card", "id": null }] },
+        { "name": "actions", "role": "Quick action row", "components": [{ "name": "ds-button", "id": null }] },
+        { "name": "assets", "role": "Per-asset list", "components": [{ "name": "ds-list-item", "id": null }] },
+        { "name": "tabBar", "role": "Bottom navigation", "components": [{ "name": "tab bar component", "id": null }] }
+      ]
+    },
+    {
+      "id": "FormFlowScreen",
+      "name": "Form Flow",
+      "description": "Multi-step form with back header, fields, and continue button. Keypad may pin on amount screens.",
+      "background": "surface (--ds-surface)",
+      "scroll": "vertical or fixed height with pinned keypad",
+      "fixedElements": ["header with back", "continue button"],
+      "slots": [
+        { "name": "header", "role": "Back + title", "components": [{ "name": "ds-button type=ghost icon=arrow-left", "id": null }] },
+        { "name": "fields", "role": "Form inputs", "components": [{ "name": "ds-field", "id": null }] },
+        { "name": "keypad", "role": "Numeric input (optional)", "components": [{ "name": "number pad component", "id": null }] },
+        { "name": "submit", "role": "Continue / confirm", "components": [{ "name": "ds-button", "id": null }] }
+      ]
+    },
+    {
+      "id": "ProfileScreen",
+      "name": "Profile / Settings",
+      "description": "Account settings. Grouped rows with chevrons and toggles.",
+      "background": "page background (--ds-bg)",
+      "scroll": "vertical; bottom tab bar fixed",
+      "fixedElements": ["header", "bottom tab bar"],
+      "slots": [
+        { "name": "header", "role": "Profile summary", "components": [{ "name": "ds-card", "id": null }] },
+        { "name": "groups", "role": "Settings row groups", "components": [{ "name": "ds-list-item", "id": null }] },
+        { "name": "tabBar", "role": "Bottom navigation", "components": [{ "name": "tab bar component", "id": null }] }
+      ]
+    },
+    {
+      "id": "ConnectionErrorState",
+      "name": "Connection Error",
+      "description": "Error / empty state. Centered illustration, message, and retry.",
+      "background": "page background (--ds-bg)",
+      "scroll": "none; centered",
+      "overlay": "full-screen state",
+      "slots": [
+        { "name": "illustration", "role": "Error graphic", "components": [{ "name": "ds-icon", "id": null }] },
+        { "name": "message", "role": "Title + body", "components": [{ "name": "text", "id": null }] },
+        { "name": "retry", "role": "Retry action", "components": [{ "name": "ds-button", "id": null }] }
+      ]
+    },
+    {
+      "id": "ConfirmationModal",
+      "name": "Confirmation Modal",
+      "description": "Centered dialog for irreversible actions. Summary rows plus confirm / cancel.",
+      "background": "scrim over page; card on surface (--ds-surface)",
+      "scroll": "none",
+      "overlay": "centered-modal",
+      "slots": [
+        { "name": "title", "role": "Action title", "components": [{ "name": "text", "id": null }] },
+        { "name": "summary", "role": "Confirmation detail rows", "components": [{ "name": "ds-list-item", "id": null }] },
+        { "name": "confirm", "role": "Confirm CTA", "components": [{ "name": "ds-button", "id": null }] },
+        { "name": "cancel", "role": "Dismiss", "components": [{ "name": "ds-button type=ghost", "id": null }] }
+      ]
+    }
+  ]
+}

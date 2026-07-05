@@ -1,0 +1,15 @@
+{
+  "name": "ds-marketplace",
+  "owner": { "name": "Josh Butler", "email": "joshuabbutler@gmail.com" },
+  "metadata": {
+    "description": "Design-system platform plugins: bootstrap coded design systems per client and build screens from prompts.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "ds-screen-platform",
+      "source": "./ds-screen-platform",
+      "description": "Prompt→screen design platform: /new-client bootstraps a coded, token-driven component library for any client; the screen-builder skill composes real components from its generated manifest."
+    }
+  ]
+}
