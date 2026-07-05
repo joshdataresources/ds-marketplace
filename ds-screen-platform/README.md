@@ -2,7 +2,8 @@
 
 Prompt→screen design platform as an installable plugin. Bundles the whole machine:
 
-- `commands/new-client.md` — `/new-client acme` bootstraps a client project anywhere.
+- `commands/new-client.md` — `/ds-screen-platform:new-client acme` bootstraps a client project
+  anywhere (plugin commands are namespaced as `/<plugin>:<command>`).
 - `skills/screen-builder/` — auto-triggers on "build a … screen"; composes real `<prefix-*>`
   components from the project's generated `ds/manifest.md`, never hand-rolled markup.
 - `template/` — the starter machine (tokens-only `ds-*` component library, manifest generator,

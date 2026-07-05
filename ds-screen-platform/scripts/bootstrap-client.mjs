@@ -178,10 +178,11 @@ async function main() {
     fs.renameSync(skillSrc, skillDest);
   }
 
-  // 4. Apply prefix to all text files
+  // 4. Apply prefix to all text files (incl. extensionless dotfiles like .cursorrules)
+  const EXTENSIONLESS_TEXT = new Set([".cursorrules", ".gitignore", ".env.example"]);
   walkFiles(dest, (file) => {
     const ext = path.extname(file);
-    if (!TEXT_EXT.has(ext)) return;
+    if (!TEXT_EXT.has(ext) && !EXTENSIONLESS_TEXT.has(path.basename(file))) return;
     const raw = fs.readFileSync(file, "utf8");
     const next = applyPrefix(raw, p, pkgName);
     if (next !== raw) fs.writeFileSync(file, next);
